@@ -328,6 +328,10 @@ public class cometMzidResultsReader {
             String id = dbSequence.getId();
             String sequence = dbSequence.getSeq();
 
+            if(sequence == null) {
+                throw new Exception("Could not find sequence for protein: " + id);
+            }
+
             if(!ProteinUtils.isIdDecoy(id))
                 proteinMap.put(id, sequence);
         }
