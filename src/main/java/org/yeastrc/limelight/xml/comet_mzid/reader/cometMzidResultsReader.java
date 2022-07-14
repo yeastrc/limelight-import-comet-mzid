@@ -240,6 +240,10 @@ public class cometMzidResultsReader {
             }
 
             MzidReportedPeptide mzidReportedPeptide = getReportedPeptide(peptide, pepEvidenceMap, staticMods);
+
+            if(peptideMap.containsKey(peptide.getId())) {
+                throw new Exception("Got two peptides with id: " + peptide.getId());
+            }
             peptideMap.put(peptide.getId(), mzidReportedPeptide);
         }
 
@@ -332,8 +336,13 @@ public class cometMzidResultsReader {
                 throw new Exception("Could not find sequence for protein: " + id);
             }
 
-            if(!ProteinUtils.isIdDecoy(id))
+            if(!ProteinUtils.isIdDecoy(id)) {
+                if(proteinMap.containsKey(id)) {
+                    throw new Exception("Got two entries for protein id: " + id);
+                }
+
                 proteinMap.put(id, sequence);
+            }
         }
 
         return proteinMap;
